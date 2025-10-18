@@ -43,11 +43,11 @@ The first and most critical challenge was ingesting the source data: a 43.51 MB 
 
 **Solution:** The robust solution was to upload the original `.xlsx` file directly to a **Databricks Volume**. A Volume is a Unity Catalog object that allows you to store and access files of any format in cloud object storage.
 
-![Uploading the raw .xlsx file to a Databricks Volume](./Screenshot%202025-10-17%20114844.png)
+![Uploading the raw .xlsx file to a Databricks Volume](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Screenshot%202025-10-17%20114844.png)
 
 A Python script using `pandas` and `PySpark` was then used to read each sheet directly from the Excel file. This process required explicitly defining data types (`dtype`) for mixed-type columns to prevent `PySparkTypeError` exceptions, ensuring no data was lost. The data from both sheets was then combined and saved as a single, complete `bronze_online_retail` Delta table.
 
-![The final Bronze table in the Databricks Catalog, containing all 1,067,371 raw records](./Bronze-.jpg)
+![The final Bronze table in the Databricks Catalog, containing all 1,067,371 raw records](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Bronze-.png)
 
 ### Phase 2: Cleansing & Enrichment (Silver Layer)
 
@@ -58,7 +58,7 @@ The raw bronze data was transformed into a clean Silver table using a single SQL
 
 The result is the `silver_online_retail` Delta table: a clean, trustworthy source for all future analysis, containing 824,364 valid transactions.
 
-![The clean Silver table in the Databricks Catalog](./Silver_Tier.jpg)
+![The clean Silver table in the Databricks Catalog](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Silver_Tier.png)
 
 ### Phase 3: Aggregation & Segmentation (Gold Layer)
 
@@ -70,7 +70,7 @@ This involved two SQL queries:
 
 This final `gold_customer_segments` table is what a marketing team would use to run targeted campaigns.
 
-![The final Gold table showing the SQL CASE statement and the resulting "Customer_Segment"](./Gold_Tier_DB.jpg)
+![The final Gold table showing the SQL CASE statement and the resulting "Customer_Segment"](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Gold_Tier_DB.png)
 
 ### Phase 4: Visualization & Predictive Modeling
 
@@ -79,17 +79,17 @@ The final step was to perform data science on our Gold RFM table using Python in
 #### Data Visualization
 First, we visualized the distributions of our RFM variables. The histograms revealed that `Frequency` and `Monetary` were heavily skewed (a common pattern in retail data), so a log transformation was used to make patterns more visible for analysis.
 
-![Histograms of Recency, Frequency (Log-Transformed), and Monetary (Log-Transformed)](./Data_Visualization_1.png)
+![Histograms of Recency, Frequency (Log-Transformed), and Monetary (Log-Transformed)](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Data_Visualization_1.png)
 
 #### Predictive Modeling
 A **Linear Regression** model was trained using `scikit-learn` to predict a customer's `Monetary` value based on their `Recency` and `Frequency`. The model was trained on 80% of the data and tested on the remaining 20%.
 
-![The Python code in Databricks for training the Linear Regression model](./Screenshot%202025-10-17%20114614.jpg)
+![The Python code in Databricks for training the Linear Regression model](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Screenshot%202025-10-17%20114614.png)
 
 ## 4. Conclusion: Model Performance
 
 The model's performance was evaluated by plotting its `Predicted Monetary Value` (Y-axis) against the `Actual Monetary Value` (X-axis) for the held-out test set.
 
-![Final model performance, plotting Actual vs. Predicted customer spending](./Model_Scatter_Plot_Actual_vs_Predicted.png)
+![Final model performance, plotting Actual vs. Predicted customer spending](https://github.com/Prabudh28/Databricks-ecommerce-project/blob/13212961e9f29f174d304de78262a27badcb9b90/Images/Screenshot%202025-10-17%20115028.png)
 
 **Analysis:** The red dashed line represents a perfect prediction (`y=x`). The cluster of blue dots shows that our model successfully learned the general relationship between customer behavior and spending, as its predictions follow this line. While the model is less accurate for high-value outliers (a known limitation of simple linear models), it provides a strong baseline for forecasting the potential value of new or promising customers. This allows the business to focus its marketing efforts effectively and make data-driven decisions.
